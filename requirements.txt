@@ -1,0 +1,33 @@
+# Core ML Libraries
+torch>=2.0.0
+transformers>=4.35.0
+peft>=0.7.0
+datasets>=2.14.0
+accelerate>=0.24.0
+
+# Evaluation
+rouge-score>=0.1.2
+nltk>=3.8.1
+evaluate>=0.4.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.17.0
+bertviz>=1.4.0
+
+# Utilities
+pandas>=2.0.0
+numpy>=1.24.0
+tqdm>=4.65.0
+wandb>=0.15.0  # Optional: for experiment tracking
+tensorboard>=2.14.0
+
+# Jupyter (for notebooks)
+jupyter>=1.0.0
+ipywidgets>=8.1.0
+
+# Development
+pytest>=7.4.0
+black>=23.7.0
+flake8>=6.1.0
