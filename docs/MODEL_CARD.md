@@ -1,4 +1,4 @@
-# Model Card: mT5 for Cross-Lingual Summarization
+# Model Card: mT5 for Cross-Lingual Summarization (English & Russian)
 
 ## Model Details
 
@@ -11,7 +11,7 @@ This project compares two approaches for fine-tuning mT5 (Multilingual Text-to-T
 
 - **Model Type**: Encoder-Decoder Transformer (Seq2Seq)
 - **Base Model**: google/mt5-small (300M parameters)
-- **Languages**: English, Italian
+- **Languages**: English, Russian
 - **Task**: Abstractive Text Summarization
 - **Developed by**: Luka Butskhrikidze, Vanderbilt University
 - **Course**: DS 5690-01 Gen AI Models in Theory & Practice
@@ -37,7 +37,7 @@ This project compares two approaches for fine-tuning mT5 (Multilingual Text-to-T
 ### Primary Use Cases
 
 1. **Research & Education**: Comparing parameter-efficient fine-tuning methods
-2. **Multilingual Summarization**: Generating concise summaries of news articles in English and Italian
+2. **Multilingual Summarization**: Generating concise summaries of news articles in English and Russian
 3. **Low-Resource Adaptation**: Demonstrating effective fine-tuning with limited compute
 
 ### Out-of-Scope Uses
@@ -52,7 +52,7 @@ This project compares two approaches for fine-tuning mT5 (Multilingual Text-to-T
 ### Dataset
 
 - **Source**: XL-Sum (BBC News multilingual corpus)
-- **Languages Used**: English, Italian
+- **Languages Used**: English, Russian
 - **Splits**:
   - Training: 1,000 articles per language
   - Validation: 200 articles per language
@@ -73,7 +73,7 @@ This project compares two approaches for fine-tuning mT5 (Multilingual Text-to-T
 - Average summary length: [TBD] tokens
 - Compression ratio: [TBD]
 
-**Italian (BBC News)**:
+**Russian (BBC News)**:
 - Average article length: [TBD] tokens
 - Average summary length: [TBD] tokens
 - Compression ratio: [TBD]
@@ -83,7 +83,6 @@ See [DATA_CARD.md](DATA_CARD.md) for detailed dataset information.
 ## Training Procedure
 
 ### Full Fine-Tuning
-
 ```yaml
 Model: google/mt5-small
 Optimizer: AdamW
@@ -94,12 +93,11 @@ Epochs: 5
 Warmup Steps: 500
 Weight Decay: 0.01
 Mixed Precision: FP16
-Hardware: [Your GPU, e.g., NVIDIA RTX 4090]
+Hardware: NVIDIA RTX 5090 (33.7GB)
 Training Time: [TBD] hours per language
 ```
 
 ### LoRA Fine-Tuning
-
 ```yaml
 Base Model: google/mt5-small (frozen)
 LoRA Rank (r): 8
@@ -113,7 +111,7 @@ Gradient Accumulation: 2 steps
 Epochs: 5
 Warmup Steps: 500
 Mixed Precision: FP16
-Hardware: [Your GPU]
+Hardware: NVIDIA RTX 5090 (33.7GB)
 Training Time: [TBD] hours per language
 Trainable Parameters: ~0.5M (0.17% of total)
 ```
@@ -147,7 +145,7 @@ Primary metrics for summarization quality:
 | LoRA | [TBD] | [TBD] | [TBD] |
 | mT5-base (zero-shot) | [TBD] | [TBD] | [TBD] |
 
-#### Italian Summarization
+#### Russian Summarization
 
 | Model | ROUGE-1 | ROUGE-2 | ROUGE-L |
 |-------|---------|---------|---------|
@@ -157,12 +155,12 @@ Primary metrics for summarization quality:
 
 #### Cross-Lingual Transfer (Optional)
 
-Training on English → Testing on Italian:
+Training on English → Testing on Russian:
 
 | Model | ROUGE-1 | ROUGE-2 | ROUGE-L |
 |-------|---------|---------|---------|
-| Full FT (EN→IT) | [TBD] | [TBD] | [TBD] |
-| LoRA (EN→IT) | [TBD] | [TBD] | [TBD] |
+| Full FT (EN→RU) | [TBD] | [TBD] | [TBD] |
+| LoRA (EN→RU) | [TBD] | [TBD] | [TBD] |
 
 ### Qualitative Analysis
 
@@ -183,8 +181,9 @@ Analysis: [Brief comment on quality, faithfulness, differences]
 
 1. **Length Constraints**: Limited to 512 input tokens; longer articles are truncated
 2. **Domain Specificity**: Trained only on news articles; may not generalize to other domains
-3. **Language Coverage**: Only evaluated on English and Italian; performance on other languages unknown
+3. **Language Coverage**: Only evaluated on English and Russian; performance on other languages unknown
 4. **Abstractiveness**: Model may default to extractive patterns for some inputs
+5. **Script Differences**: Russian uses Cyrillic script, which may affect tokenization and performance differently than Latin-script languages
 
 ### Known Biases
 
@@ -231,12 +230,12 @@ LoRA significantly reduces environmental impact while maintaining performance.
 
 Luka Butskhrikidze  
 Course: DS 5690-01 Gen AI Models in Theory & Practice (2025F)  
+Vanderbilt University
 Date: November 2025
 
 ## Model Card Contact
 
 For questions or issues with this model card:
-- Email: luka.butskhrikidze@vanderbilt.edu
 - GitHub: https://github.com/LukaButskhrikidze/LoRA-Tuned_mT5_for_Cross-Lingual_Abstractive_News_Summarization
 
 ## References
@@ -256,3 +255,43 @@ For questions or issues with this model card:
 **Version**: 1.0  
 **Last Updated**: November 2025  
 **Status**: Educational/Research - Not for Production Use
+```
+
+---
+
+## **4. `requirements.txt` (Root Directory)**
+
+Update your `requirements.txt`:
+```
+# Core ML Libraries
+torch>=2.0.0
+transformers>=4.35.0
+peft>=0.7.0
+datasets==2.19.0  # Works with XL-Sum loading scripts
+pyarrow==15.0.0   # Required for datasets 2.19.0
+accelerate>=0.24.0
+
+# Evaluation
+rouge-score>=0.1.2
+nltk>=3.8.1
+evaluate>=0.4.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.17.0
+
+# Utilities
+pandas>=2.0.0
+numpy>=1.24.0
+tqdm>=4.65.0
+tensorboard>=2.14.0
+
+# Jupyter (for notebooks)
+jupyter>=1.0.0
+ipywidgets>=8.1.0
+
+# Development
+pytest>=7.4.0
+black>=23.7.0
+flake8>=6.1.0
