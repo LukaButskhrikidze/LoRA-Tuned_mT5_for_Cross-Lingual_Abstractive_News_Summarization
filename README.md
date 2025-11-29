@@ -1,88 +1,99 @@
-# Cross-Lingual Summarization: mT5 Fine-Tuning vs LoRA
+# LoRA vs Full Fine-Tuning: mT5 for Cross-Lingual Abstractive Summarization
 
-**Course**: DS 5690-01 Gen AI Models in Theory & Practice (2025F)  
-**Focus**: Parameter-Efficient Fine-Tuning with LoRA on Encoder-Decoder Transformers
-
----
+**Course:** DS 5690-01 Gen AI Models in Theory & Practice  
+**Author:** Luka Butskhrikidze  
+**Institution:** Vanderbilt University
 
 ## 📋 Project Overview
 
-This project implements and compares **full fine-tuning** vs **LoRA (Low-Rank Adaptation)** for cross-lingual abstractive summarization using mT5 on the XL-Sum dataset (English and Italian).
+This project compares **Parameter-Efficient Fine-Tuning (LoRA)** with **Full Fine-Tuning** for multilingual abstractive summarization using mT5-small on the XL-Sum dataset. We investigate the performance-efficiency trade-offs and cross-lingual transfer capabilities of both approaches.
 
-**Research Question**: How does LoRA's parameter efficiency compare to full fine-tuning in terms of performance, training cost, and generalization for multilingual seq2seq tasks?
+## 🎯 Key Findings
 
----
+### English Results (High-Resource Language)
 
-## 🎯 Problem Statement
+| Model | ROUGE-1 | ROUGE-2 | ROUGE-L | Model Size | Trainable Parameters |
+|-------|---------|---------|---------|------------|---------------------|
+| **Full Fine-Tuning** | 31.09 | 9.42 | **24.02** | 300 MB | 100% (300M) |
+| **LoRA (r=8, α=16)** | 26.31 | 5.93 | **20.18** | 5 MB | 0.3% (0.9M) |
 
-Large multilingual models like mT5 contain billions of parameters, making full fine-tuning computationally expensive and impractical for many applications. LoRA offers a parameter-efficient alternative by training only low-rank adapter matrices. This project empirically evaluates the trade-offs between these approaches for cross-lingual news summarization.
+**Key Insights:**
+- ✅ **LoRA achieves 84% of full fine-tuning performance** (ROUGE-L: 20.18 vs 24.02)
+- ✅ **60× smaller model size** (5 MB vs 300 MB)
+- ✅ **Similar training time** (~1.5 hours for both)
+- ✅ **Massive deployment advantages** for multi-task scenarios
 
----
+### Russian Results (Medium-Resource Language)
 
-## 🏗️ Repository Structure
+| Model | ROUGE-1 | ROUGE-2 | ROUGE-L | Status |
+|-------|---------|---------|---------|--------|
+| **Full Fine-Tuning** | 5.22 | 1.14 | 5.17 | ❌ Failed |
+| **LoRA (r=8, α=16)** | 3.08 | 0.71 | 3.07 | ❌ Failed |
 
-```
-mt5-lora-summarization/
-├── README.md                          # This file
-├── requirements.txt                   # Python dependencies
-├── setup.sh                          # Environment setup script
-│
-├── data/
-│   ├── download_xlsum.py             # Script to download XL-Sum data
-│   └── preprocess.py                 # Data preprocessing utilities
-│
-├── src/
-│   ├── models/
-│   │   ├── mt5_full.py              # Full fine-tuning trainer
-│   │   ├── mt5_lora.py              # LoRA fine-tuning trainer
-│   │   └── config.py                # Model configurations
-│   │
-│   ├── evaluation/
-│   │   ├── rouge_eval.py            # ROUGE metric computation
-│   │   └── analysis.py              # Result analysis utilities
-│   │
-│   ├── visualization/
-│   │   ├── attention_viz.py         # Attention pattern visualization
-│   │   └── training_plots.py        # Training metrics visualization
-│   │
-│   └── utils/
-│       ├── tokenizer.py             # Tokenization utilities
-│       └── logger.py                # Logging setup
-│
-├── scripts/
-│   ├── train_full.sh                # Run full fine-tuning
-│   ├── train_lora.sh                # Run LoRA fine-tuning
-│   ├── evaluate.sh                  # Run evaluation
-│   └── cross_lingual_test.sh        # Cross-lingual transfer test
-│
-├── notebooks/
-│   ├── 01_data_exploration.ipynb    # Dataset analysis
-│   ├── 02_model_comparison.ipynb    # Results comparison
-│   └── 03_attention_analysis.ipynb  # Attention visualization
-│
-├── outputs/
-│   ├── checkpoints/                 # Model checkpoints
-│   ├── results/                     # Evaluation results
-│   └── figures/                     # Generated plots
-│
-├── docs/
-│   ├── MODEL_CARD.md               # Model documentation
-│   ├── DATA_CARD.md                # Dataset documentation
-│   └── METHODOLOGY.md              # Detailed methodology
-│
-└── presentation/
-    ├── slides.pdf                   # Final presentation
-    └── demo_examples.md             # Demo examples for presentation
-```
+**Critical Finding:**
+Both methods failed systematically on Russian, revealing that **mT5-small (300M parameters) lacks sufficient capacity for Cyrillic-script languages**, regardless of training approach. This highlights the importance of model scale in multilingual NLP.
 
----
+## 🔬 Methodology
 
-## 🚀 Quick Start
+### Dataset
+- **XL-Sum** (Cross-Lingual Summarization Dataset)
+  - English: 306,522 training samples
+  - Russian: 62,243 training samples
 
-### Prerequisites
-- Python 3.9+
-- CUDA-capable GPU (16GB+ VRAM recommended)
-- 50GB free disk space
+### Model
+- **mT5-small** (300M parameters)
+- Multilingual Text-to-Text Transfer Transformer
+
+### Training Configuration
+
+**English:**
+- Epochs: 3
+- Batch size: 4
+- Learning rate: 5e-5 (Full) / 1e-4 (LoRA)
+- Max sequence length: 512 (input) / 128 (output)
+
+**Russian:**
+- Epochs: 5 (to compensate for smaller dataset)
+- Other parameters same as English
+
+**LoRA Configuration:**
+- Rank (r): 8
+- Alpha (α): 16
+- Target modules: Query and Value projection layers
+- Dropout: 0.1
+
+## 📊 Detailed Analysis
+
+### Performance Trade-offs
+
+1. **Quality vs Efficiency:**
+   - LoRA sacrifices ~16% ROUGE-L performance
+   - Gains 60× storage reduction
+   - Enables multi-task deployment (one base model + many adapters)
+
+2. **Training Dynamics:**
+   - Similar training time for small models (mT5-small)
+   - LoRA advantages emerge with larger models (>1B parameters)
+
+3. **Cross-Lingual Transfer Limitations:**
+   - Model capacity bottleneck more critical than training method
+   - Latin-script bias in mT5 pretraining affects Cyrillic performance
+
+### When to Use LoRA vs Full Fine-Tuning
+
+**Use LoRA when:**
+- ✅ Working with large models (>1B parameters)
+- ✅ Need multiple task-specific models
+- ✅ Storage/deployment constraints
+- ✅ Acceptable to trade 10-20% performance for efficiency
+
+**Use Full Fine-Tuning when:**
+- ✅ Maximum performance required
+- ✅ Single-task deployment
+- ✅ Model is small enough to fit in memory
+- ✅ Storage is not a constraint
+
+## 🚀 Getting Started
 
 ### Installation
 
@@ -97,219 +108,117 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
-
-# Download data
-python data/download_xlsum.py --languages en it --output_dir data/xlsum
 ```
+
+### Download Data
+
+```bash
+python data/download_xlsum.py
+```
+
+This downloads English and Russian XL-Sum datasets to `data/xlsum_english/` and `data/xlsum_russian/`.
 
 ### Training
 
-**Full Fine-Tuning (English)**
+**Full Fine-Tuning (English):**
 ```bash
-bash scripts/train_full.sh \
-  --language en \
-  --model_name google/mt5-small \
+python src/train_mt5.py \
+  --mode full \
+  --language english \
   --output_dir outputs/checkpoints/mt5_full_en \
-  --num_epochs 5 \
-  --batch_size 8
+  --num_epochs 3 \
+  --batch_size 4 \
+  --train_samples 306522 \
+  --val_samples 11535
 ```
 
-**LoRA Fine-Tuning (English)**
+**LoRA Fine-Tuning (English):**
 ```bash
-bash scripts/train_lora.sh \
-  --language en \
-  --model_name google/mt5-small \
-  --lora_r 8 \
-  --lora_alpha 16 \
+python src/train_mt5.py \
+  --mode lora \
+  --language english \
   --output_dir outputs/checkpoints/mt5_lora_en \
-  --num_epochs 5 \
-  --batch_size 8
+  --num_epochs 3 \
+  --batch_size 4 \
+  --train_samples 306522 \
+  --val_samples 11535 \
+  --lora_r 8 \
+  --lora_alpha 16
 ```
 
 ### Evaluation
 
 ```bash
-bash scripts/evaluate.sh \
-  --model_path outputs/checkpoints/mt5_lora_en \
-  --test_language en \
-  --output_file outputs/results/lora_en_results.json
+python src/evaluation/evaluate_model.py \
+  --model_path outputs/checkpoints/mt5_full_en \
+  --language english \
+  --test_samples 1000 \
+  --output_file outputs/results/full_en_test.json
 ```
 
----
+### Generate Sample Predictions
 
-## 📊 Methodology
-
-### Connection to Course Content
-
-**1. Transformer Architecture (Encoder-Decoder)**
-- mT5 implements the full encoder-decoder architecture covered in class
-- Encoder processes input (article), decoder generates output (summary)
-- Cross-attention mechanism connects encoder and decoder
-
-**2. LoRA (Parameter-Efficient Fine-Tuning)**
-- Applies low-rank decomposition: ΔW = BA where B ∈ ℝ^(d×r), A ∈ ℝ^(r×k)
-- Targets attention matrices (Q, K, V, O) in both encoder and decoder
-- Rank r controls the trade-off between capacity and efficiency
-
-**3. Training Configuration**
-```python
-Full Fine-Tuning:
-- All parameters trainable (~300M for mT5-small)
-- Standard AdamW optimizer
-- Learning rate: 5e-5
-
-LoRA:
-- Only adapter parameters trainable (~0.5M, <1% of model)
-- Rank r = 8, alpha = 16
-- Learning rate: 1e-4 (can use higher LR for LoRA)
+```bash
+python src/generate_samples.py \
+  --model_path outputs/checkpoints/mt5_full_en \
+  --language english \
+  --num_samples 10 \
+  --output_file outputs/results/samples_full_en.txt
 ```
 
-### Experimental Design
+## 📁 Project Structure
 
-**Languages**: English (EN), Italian (IT)
-**Dataset**: XL-Sum BBC news articles (train/val/test splits)
-**Metrics**: 
-- ROUGE-1, ROUGE-2, ROUGE-L (primary)
-- Trainable parameters (%)
-- Training time per epoch
-- GPU memory usage
-- Inference speed
+```
+.
+├── data/
+│   ├── xlsum_english/          # English dataset
+│   ├── xlsum_russian/          # Russian dataset
+│   └── download_xlsum.py       # Data download script
+├── src/
+│   ├── train_mt5.py           # Main training script
+│   ├── evaluation/
+│   │   └── evaluate_model.py  # Model evaluation
+│   ├── visualization/
+│   │   ├── results_comparison.py
+│   │   └── training_plots.py
+│   └── utils/
+├── outputs/
+│   ├── checkpoints/           # Trained models
+│   ├── results/              # Evaluation results
+│   └── figures/              # Visualizations
+├── notebooks/
+│   └── 01_data_exploration.ipynb
+├── scripts/                   # Bash training scripts
+├── requirements.txt
+└── README.md
+```
 
-**Comparisons**:
-1. Full FT (EN) vs LoRA (EN) - Same language performance
-2. Full FT (IT) vs LoRA (IT) - Generalization to second language
-3. Cross-lingual: Train EN → Test IT (optional if time permits)
+## 🔍 Key Takeaways
 
----
+1. **LoRA is Viable for High-Resource Languages:** Achieves 84% of full fine-tuning performance with minimal trainable parameters.
 
-## 📈 Expected Results
+2. **Storage Efficiency Matters:** 60× reduction enables practical multi-task deployment scenarios.
 
-### Performance Comparison Table
-| Model | Language | ROUGE-1 | ROUGE-2 | ROUGE-L | Trainable Params | Train Time |
-|-------|----------|---------|---------|---------|------------------|------------|
-| Full FT | EN | TBD | TBD | TBD | 100% | TBD |
-| LoRA | EN | TBD | TBD | TBD | ~0.5% | TBD |
-| Full FT | IT | TBD | TBD | TBD | 100% | TBD |
-| LoRA | IT | TBD | TBD | TBD | ~0.5% | TBD |
+3. **Model Scale is Critical:** For underrepresented languages (Russian/Cyrillic), model capacity matters more than training efficiency.
 
-### Efficiency Metrics
-- **Memory**: LoRA uses ~30-40% less VRAM during training
-- **Speed**: LoRA trains ~20-30% faster per epoch
-- **Storage**: LoRA checkpoints are 200x smaller (~2MB vs 400MB)
-
----
-
-## 🔍 Analysis & Visualization
-
-### 1. Attention Pattern Analysis
-- Visualize encoder self-attention for source article
-- Visualize decoder cross-attention (which source tokens influence summary)
-- Compare attention distributions between full FT and LoRA
-
-### 2. Training Dynamics
-- Loss curves comparison
-- Learning rate schedules
-- Convergence speed analysis
-
-### 3. Qualitative Examples
-- Side-by-side summary comparisons
-- Error analysis (hallucinations, faithfulness issues)
-- Language-specific observations
-
----
-
-## 📄 Model & Data Cards
-
-See detailed documentation:
-- **Model Card**: [docs/MODEL_CARD.md](docs/MODEL_CARD.md)
-- **Data Card**: [docs/DATA_CARD.md](docs/DATA_CARD.md)
-
-### Quick Summary
-
-**Model**:
-- Base: google/mt5-small (300M parameters)
-- Versions: Full fine-tuned, LoRA-adapted
-- Languages: English, Italian
-- License: Apache 2.0
-
-**Data**:
-- XL-Sum BBC news corpus
-- Train: 1,000 articles per language
-- Val: 200 articles per language
-- Test: 200 articles per language
-- License: CC BY-NC-SA 4.0
-
----
-
-## 🎓 Course Connections
-
-### Topics Covered
-1. **Attention Mechanisms**: Multi-head self-attention and cross-attention in encoder-decoder
-2. **Transformer Architecture**: Positional encoding, layer normalization, feed-forward networks
-3. **Fine-Tuning Strategies**: Full fine-tuning vs parameter-efficient methods
-4. **LoRA Theory**: Low-rank matrix decomposition, adapter injection points
-5. **Multilingual Models**: Shared vocabulary, cross-lingual transfer
-
-### Learning Objectives Demonstrated
-- Implement and compare training paradigms for large language models
-- Analyze attention patterns in transformer architectures
-- Evaluate trade-offs between model performance and computational efficiency
-- Apply parameter-efficient fine-tuning techniques to real-world tasks
-
----
-
-## 🔮 Critical Analysis & Future Work
-
-### Impact
-- Demonstrates practical viability of LoRA for resource-constrained environments
-- Provides empirical evidence for when LoRA matches full fine-tuning performance
-- Enables easier deployment and iteration for multilingual applications
-
-### Key Findings
-1. [To be filled after experiments]
-2. LoRA achieves XX% of full FT performance with <1% trainable parameters
-3. Cross-attention patterns show [observation]
-
-### Limitations
-- Limited to 2 languages (EN, IT)
-- Small subset of XL-Sum dataset
-- mT5-small may not capture full multilingual capabilities
-
-### Next Steps
-- Extend to more typologically diverse languages (e.g., Arabic, Chinese)
-- Experiment with LoRA rank ablation (r = 4, 8, 16, 32)
-- Implement QLoRA for even more memory efficiency
-- Add faithfulness metrics (BERTScore, QuestEval)
-
----
+4. **Future Work:**
+   - Test with mT5-base (580M) or mT5-large (1.2B) for Russian
+   - Explore higher LoRA ranks (r=16, r=32)
+   - Investigate language-specific adapters
+   - Test on additional low-resource languages
 
 ## 📚 References
 
-### Papers
-- [LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685) (Hu et al., 2021)
-- [mT5: A massively multilingual pre-trained text-to-text transformer](https://arxiv.org/abs/2010.11934) (Xue et al., 2020)
-- [XL-Sum: Large-Scale Multilingual Abstractive Summarization](https://arxiv.org/abs/2106.13822) (Hasan et al., 2021)
+- **mT5:** Xue et al. (2021). "mT5: A Massively Multilingual Pre-trained Text-to-Text Transformer"
+- **LoRA:** Hu et al. (2021). "LoRA: Low-Rank Adaptation of Large Language Models"
+- **XL-Sum:** Hasan et al. (2021). "XL-Sum: Large-Scale Multilingual Abstractive Summarization for 44 Languages"
 
-### Code Resources
-- [HuggingFace Transformers](https://github.com/huggingface/transformers)
-- [PEFT: Parameter-Efficient Fine-Tuning](https://github.com/huggingface/peft)
-- [XL-Sum Dataset](https://huggingface.co/datasets/csebuetnlp/xlsum)
-
----
-
-## 👥 Author
+## 📧 Contact
 
 **Luka Butskhrikidze**  
-Course: DS 5690-01 Gen AI Models in Theory & Practice (2025F)  
-Instructor: Jesse Spencer-Smith  
-Date: November 2025
+Vanderbilt University  
+DS 5690-01 Gen AI Models in Theory & Practice
 
----
+## 📄 License
 
-## 📝 License
-
-This project is for educational purposes as part of coursework at Vanderbilt University.
-
-Code: MIT License  
-Models: Subject to original model licenses (Apache 2.0 for mT5)  
-Data: CC BY-NC-SA 4.0 (XL-Sum)
+This project is for academic purposes as part of DS 5690 coursework.
