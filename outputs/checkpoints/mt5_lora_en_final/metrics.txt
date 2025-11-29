@@ -1,0 +1,18 @@
+Mode: lora
+Language: english
+Train samples: 306522
+Val samples: 11535
+Epochs: 3
+Batch size: 4
+Learning rate: 0.0001
+LoRA rank: 8
+LoRA alpha: 16
+
+eval_loss: 2.8958327770233154
+eval_rouge1: 26.31
+eval_rouge2: 5.93
+eval_rougeL: 20.18
+eval_runtime: 573.7083
+eval_samples_per_second: 20.106
+eval_steps_per_second: 5.027
+epoch: 3.0

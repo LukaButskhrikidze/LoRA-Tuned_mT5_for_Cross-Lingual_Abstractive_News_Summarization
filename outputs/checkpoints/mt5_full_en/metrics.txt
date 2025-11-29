@@ -1,0 +1,16 @@
+Mode: full
+Language: english
+Train samples: 306522
+Val samples: 11535
+Epochs: 3
+Batch size: 4
+Learning rate: 5e-05
+
+eval_loss: 2.2564899921417236
+eval_rouge1: 31.09
+eval_rouge2: 9.42
+eval_rougeL: 24.02
+eval_runtime: 506.9914
+eval_samples_per_second: 22.752
+eval_steps_per_second: 5.688
+epoch: 3.0

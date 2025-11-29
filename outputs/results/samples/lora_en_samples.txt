@@ -1,0 +1,134 @@
+====================================================================================================
+SAMPLE PREDICTIONS - outputs/checkpoints/mt5_lora_en_final
+Language: ENGLISH
+====================================================================================================
+
+SAMPLE 1 (Index: 10476)
+----------------------------------------------------------------------------------------------------
+SOURCE TEXT (first 500 chars):
+The remaining field of four candidates will be whittled down to three in a secret ballot. The result are expected at about 13:00 BST. There will then be a further vote to select the final two, one of whom will be elected leader by party members. Boris Johnson topped Wednesday's third ballot with 143 votes, ahead of Jeremy Hunt, Michael Gove and Sajid Javid. International Development Secretary Rory Stewart was knocked out of the contest on Wednesday evening, after he secured the backing of just 2...
+
+REFERENCE SUMMARY:
+Tory MPs have voted in the latest stage of their leadership race, with the man who comes last set to be eliminated.
+
+GENERATED SUMMARY:
+The former foreign secretary Boris Johnson has been knocked out of the final two, according to the BBC's political paper.
+
+====================================================================================================
+
+SAMPLE 2 (Index: 1824)
+----------------------------------------------------------------------------------------------------
+SOURCE TEXT (first 500 chars):
+Matt McGrathEnvironment correspondent@mattmcgrathbbcon Twitter In this strange universe, the cold war seemed to suddenly return, Ireland began to perform consistently at rugby, and arch-climate sceptics began to believe in dangerous levels of global warming. Imagine my surprise then, on reading this new report from the Global Warming Policy Foundation (GWPF). Here was one of the world's foremost bastions of contrariness when it comes to man-made climate change, admitting that temperatures were a...
+
+REFERENCE SUMMARY:
+I once had a dream (or was it a dram?) in which the things we thought we knew for certain about the world were suddenly turned upside down.
+
+GENERATED SUMMARY:
+The world's largest climate crisis has been called for a dramatic increase in dangerous levels of global warming in the atmosphere.
+
+====================================================================================================
+
+SAMPLE 3 (Index: 409)
+----------------------------------------------------------------------------------------------------
+SOURCE TEXT (first 500 chars):
+Easton & Otley College, which has campuses in Norfolk and Suffolk, offers courses in agriculture and engineering. An intervention assessment by the Further Education Commissioner (FEC) said "very swift action" was needed. The college said a full structural review would take place, but there had already been a "turnaround". The FEC intervention was its second in 13 months, prompted by inadequate ratings by Ofsted. Ofsted inspectors visiting last year had said too many of its 5,000 students failed...
+
+REFERENCE SUMMARY:
+A rural higher education college, given two consecutive inadequate ratings by inspectors, still has "too much poor teaching", a report said.
+
+GENERATED SUMMARY:
+A college and board has said it is "very swift action" to improve attendance rates, a report has said.
+
+====================================================================================================
+
+SAMPLE 4 (Index: 4506)
+----------------------------------------------------------------------------------------------------
+SOURCE TEXT (first 500 chars):
+Six people were taken to hospital with injuries including stab wounds following the disturbance in Queen Street at about 21:50 GMT on Saturday. Three teenagers, aged 16 and 17, remain in hospital with non-life threatening injuries. South Wales Police said the clash involved two groups who had travelled into the city centre. Officers were alerted by "multiple reports" of a "large disturbance" in the city centre on Saturday. Detectives now say it involved two groups, from the Grangetown and Rumney...
+
+REFERENCE SUMMARY:
+Seven boys aged 16 and 17 have been arrested after a violent clash between two groups in Cardiff city centre.
+
+GENERATED SUMMARY:
+A police force has been alerted by a clash of young people in South Wales.
+
+====================================================================================================
+
+SAMPLE 5 (Index: 4012)
+----------------------------------------------------------------------------------------------------
+SOURCE TEXT (first 500 chars):
+The Tir Dewi helpline has helped 200 farmers and their families since it was launched in west Wales five years ago. Now it has expanded its service to Powys with plans to launch in Gwynedd, Conwy and Anglesey later this year. "There was always a dream it might live up to its name and serve the whole of Wales one day," said founder and farmer Eileen Davies, Archdeacon of Cardigan. Speaking ahead of the Powys launch at the Virtual Royal Welsh Show, project leader Elen Skyrme said a survey revealed...
+
+REFERENCE SUMMARY:
+Farmers suffering from loneliness and anxiety are to be offered more free support from the Church in Wales.
+
+GENERATED SUMMARY:
+A scheme to help farmers struggling with rural crime and bovine TB has been launched in Cardigan.
+
+====================================================================================================
+
+SAMPLE 6 (Index: 3657)
+----------------------------------------------------------------------------------------------------
+SOURCE TEXT (first 500 chars):
+Tom EdwardsTransport correspondent, London@BBCTomEdwardson Twitter Perhaps at its peak the bike lanes put in along Embankment by Boris Johnson came close. But the Low Traffic Neighbourhoods (LTNs) are attracting loud noisy opposition in most places they are put in. LTNs use planters to stop through traffic but they also mean getting around in places like Northfields in Ealing by car becomes a lot more difficult. And that is the theory behind them - they want to drive down car ownership and get p...
+
+REFERENCE SUMMARY:
+It is difficult to remember transport schemes attracting such vitriol.
+
+GENERATED SUMMARY:
+The councils are being asked to scrapping their LTNs in the borough of Northfields.
+
+====================================================================================================
+
+SAMPLE 7 (Index: 2286)
+----------------------------------------------------------------------------------------------------
+SOURCE TEXT (first 500 chars):
+Announcing the policy, they said more than 70,000 pupils in Wales were taught in classes of over 25, or 59% of all infant classes. Education spokesman Aled Roberts AM said teachers would have more time with individual children and lesson quality would improve. Classes can have up to 30 pupils. Mr Roberts said it was about giving teachers "time to do what they do best: teach", adding: "The Welsh Liberal Democrats would work to ensure that infant classes normally contain no more than 25 pupils, pr...
+
+REFERENCE SUMMARY:
+Infant classes would be cut to no more than 25 pupils under a Welsh Liberal Democrat government, the party has said.
+
+GENERATED SUMMARY:
+The Welsh National Union of Teachers Cymru has warned teachers to prioritise classes in classes of over 25 pupils.
+
+====================================================================================================
+
+SAMPLE 8 (Index: 1679)
+----------------------------------------------------------------------------------------------------
+SOURCE TEXT (first 500 chars):
+By Catherine SmythBBC News NI David Ford said he was concerned that a lack of "legal certainty" could lead inadvertently to abortion on demand. In December, a judge ruled the law does not comply with the European Convention on Human Rights in cases of fatal foetal abnormality or sexual crime. The case was brought by the Northern Ireland Human Rights Commission. 'Incremental widening' The current legislation differs from the rest of the UK as the 1967 Abortion Act was never extended to Northern I...
+
+REFERENCE SUMMARY:
+Stormont's justice minister is lodging an appeal to a High Court ruling that abortion law in Northern Ireland is "incompatible" with human rights law.
+
+GENERATED SUMMARY:
+Northern Ireland's executive has said it could lead to a lack of legislation on abortion.
+
+====================================================================================================
+
+SAMPLE 9 (Index: 11087)
+----------------------------------------------------------------------------------------------------
+SOURCE TEXT (first 500 chars):
+Labour MP Chris Bryant, who wants the UK to remain in the EU, said the graffiti on his Tonypandy offices would not change his mind on Brexit. In a defiant tweet on Saturday morning, the Rhondda MP said the people who painted the abuse "underestimate" him. South Wales Police said it was investigating and asked anyone with information to come forward. Mr Bryant blamed "anyone who has poured a bit more bile into the pot" for contributing to a lack of respect. None of his staff were in the building ...
+
+REFERENCE SUMMARY:
+Vandals have painted the word "traitor" across the front of a pro-EU MP's constituency offices.
+
+GENERATED SUMMARY:
+A man who painted a graffiti on his Tonypandy office would not change his mind on Brexit, the BBC Wales has said.
+
+====================================================================================================
+
+SAMPLE 10 (Index: 8935)
+----------------------------------------------------------------------------------------------------
+SOURCE TEXT (first 500 chars):
+The five-minute acoustic arrangement for Birmingham Cathedral was a huge departure for the musician once accused of being a Satanist. The 68-year-old said the song, How Good It Is, was to give something back to the city he hails from. He said the track was "just a little bit different to Sabbath". The project was born out of his friendship with the Dean of Birmingham, the Very Reverend Catherine Ogle, which developed when he was battling cancer in 2012. The lyrics for the piece were inspired by ...
+
+REFERENCE SUMMARY:
+Black Sabbath founder Tony Iommi has swapped his heavy metal roots for an ecclesiastical project by writing and producing a piece of choral music.
+
+GENERATED SUMMARY:
+Tony Iommi has said it was a "very wonderful gift" to Tony and his wife.
+
+====================================================================================================

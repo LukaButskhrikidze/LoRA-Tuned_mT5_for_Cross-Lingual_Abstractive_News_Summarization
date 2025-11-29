@@ -1,0 +1,16 @@
+Mode: full
+Language: russian
+Train samples: 62243
+Val samples: 7780
+Epochs: 5
+Batch size: 4
+Learning rate: 5e-05
+
+eval_loss: 2.313647985458374
+eval_rouge1: 5.22
+eval_rouge2: 1.14
+eval_rougeL: 5.17
+eval_runtime: 940.5735
+eval_samples_per_second: 8.272
+eval_steps_per_second: 2.068
+epoch: 5.0
