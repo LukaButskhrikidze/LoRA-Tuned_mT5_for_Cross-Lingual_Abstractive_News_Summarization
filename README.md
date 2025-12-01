@@ -4,7 +4,43 @@
 **Author:** Luka Butskhrikidze  
 **Institution:** Vanderbilt University
 
-This project compares Parameter-Efficient Fine-Tuning (LoRA) with Full Fine-Tuning for multilingual abstractive summarization using mT5-small on the XL-Sum dataset. We investigate the performance-efficiency trade-offs and cross-lingual transfer capabilities of both approaches.
+---
+
+## 🎯 Problem Statement
+
+### The Challenge
+Fine-tuning large language models (LLMs) for specific tasks is resource-intensive and expensive. When organizations need to deploy models across multiple tasks or domains, traditional full fine-tuning requires:
+- **Storing complete model copies** for each task (hundreds of MB per model)
+- **Training all parameters** (millions to billions of weights)
+- **High memory requirements** during training and deployment
+- **Significant computational costs** for each adaptation
+
+For example, adapting a 300M parameter model to 10 different summarization domains would require 3GB of storage and 10 separate training runs updating all parameters.
+
+### Existing Approaches
+Several parameter-efficient fine-tuning (PEFT) methods have emerged:
+- **Adapter layers**: Add small bottleneck layers between transformer blocks
+- **Prefix tuning**: Prepend learnable continuous prompts to inputs
+- **LoRA (Low-Rank Adaptation)**: Insert low-rank decomposition matrices into attention layers
+
+While these methods reduce trainable parameters, their effectiveness for multilingual tasks and cross-lingual transfer remains understudied.
+
+### Research Questions
+This project investigates:
+1. **How does LoRA compare to full fine-tuning** for multilingual abstractive summarization in terms of performance and efficiency?
+2. **What are the trade-offs** between model size, trainable parameters, and ROUGE scores?
+3. **Does the training method affect cross-lingual transfer** capabilities for low-resource languages?
+4. **When should practitioners choose LoRA over full fine-tuning** in production scenarios?
+
+### Our Approach
+We conduct a systematic comparison of **LoRA vs. Full Fine-Tuning** using:
+- **Model**: mT5-small (300M parameters)
+- **Task**: Abstractive news summarization
+- **Languages**: English (high-resource) and Russian (medium-resource, non-Latin script)
+- **Dataset**: XL-Sum with 306K English and 62K Russian training samples
+- **Metrics**: ROUGE scores, model size, trainable parameters, training time
+
+This controlled comparison reveals when parameter-efficient methods provide sufficient performance for real-world deployment.
 
 ---
 
@@ -260,23 +296,20 @@ This project compares Parameter-Efficient Fine-Tuning (LoRA) with Full Fine-Tuni
 
 ---
 
-## 🔧 Dataset
+## 🔧 Methodology
 
-### XL-Sum (Cross-Lingual Summarization Dataset)
-- **English:** 306,522 training samples
-- **Russian:** 62,243 training samples
-- **Source:** https://github.com/csebuetnlp/xl-sum
+### Dataset & Model
+- **XL-Sum Dataset**
+  - English: 306,522 training samples
+  - Russian: 62,243 training samples
+  - Source: https://github.com/csebuetnlp/xl-sum
+- **Base Model:** mT5-small (300M parameters)
+  - Multilingual Text-to-Text Transfer Transformer
+  - Pre-trained on mC4 corpus (101 languages)
 
-### Base Model
-- **mT5-small** (300M parameters)
-- Multilingual Text-to-Text Transfer Transformer
-- Pre-trained on mC4 corpus (101 languages)
+### Training Configuration
 
----
-
-## ⚙️ Training Configuration
-
-### English Training
+**English Training:**
 - **Epochs:** 3
 - **Batch size:** 4
 - **Learning rate:** 5e-5 (Full) / 1e-4 (LoRA)
@@ -284,7 +317,7 @@ This project compares Parameter-Efficient Fine-Tuning (LoRA) with Full Fine-Tuni
 - **Training samples:** 306,522
 - **Validation samples:** 11,535
 
-### Russian Training
+**Russian Training:**
 - **Epochs:** 5 (to compensate for smaller dataset)
 - **Batch size:** 4
 - **Learning rate:** 5e-5 (Full) / 1e-4 (LoRA)
@@ -292,12 +325,22 @@ This project compares Parameter-Efficient Fine-Tuning (LoRA) with Full Fine-Tuni
 - **Training samples:** 62,243
 - **Validation samples:** 2,348
 
-### LoRA Configuration
+**LoRA Configuration:**
 - **Rank (r):** 8
 - **Alpha (α):** 16
 - **Target modules:** Query and Value projection layers
 - **Dropout:** 0.1
 - **Trainable parameters:** 0.9M (0.3% of total)
+
+### Course Concepts Applied
+
+This project directly applies key concepts from DS 5690:
+1. **Transfer Learning:** Leveraging mT5's multilingual pre-training on mC4 corpus
+2. **Parameter-Efficient Fine-Tuning:** LoRA as an alternative to full fine-tuning and adapter methods
+3. **Low-Rank Matrix Approximation:** Mathematical foundation of LoRA (W = W₀ + BA)
+4. **Multi-Task Learning Trade-offs:** Storage vs. performance analysis
+5. **Cross-Lingual Transfer:** Investigating model capacity for different language families
+6. **Evaluation Metrics:** ROUGE-1, ROUGE-2, ROUGE-L for summarization quality
 
 ---
 
